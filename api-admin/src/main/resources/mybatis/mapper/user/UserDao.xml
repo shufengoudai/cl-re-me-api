@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amis.api.admin.dao.user.UserDao">
+
+    <select id="listUser" resultType="com.amis.api.admin.entity.user.User">
+        SELECT t_user.id,user_name,user_fullname,position,user_mail,user_tel,user_depart,user_sex
+        ,user_notify,ins_account_id,ins_dt_time,upd_account_id,upd_dt_time,auth_role.name AS authorityName
+        ,t_user.authority
+        FROM t_user
+        LEFT JOIN auth_role
+        ON auth_role.id = t_user.authority
+        <where>
+            logical_del_div = 0
+            and company_id = #{companyId}
+        </where>
+        ORDER BY user_name
+    </select>
+
+    <select id="getUser" resultType="com.amis.api.admin.entity.user.User">
+        SELECT id,user_name,user_fullname,position,user_mail,user_tel,user_depart,user_sex
+        ,user_notify,ins_account_id,ins_dt_time,upd_account_id,upd_dt_time,authority,company_id
+        FROM t_user
+        <where>
+            and id = #{id}
+        </where>
+    </select>
+
+    <update id="updateByCompany">
+        update t_user
+        set logical_del_div = 1,
+            upd_account_id = '${updAccountId}',
+            upd_dt_time = '${date}'
+        where company_id = '${id}'
+    </update>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.amis.api.admin.dao.auth.AuthUserRoleDao">
+
+    <select id="listByAdminId" resultType="com.amis.api.admin.entity.auth.AuthUserRole">
+        SELECT authority as role_id
+        FROM t_user
+        where id = #{adminId}
+        AND logical_del_div = 0
+    </select>
+
+    <select id="listByAdminIdIn" resultType="com.amis.api.admin.entity.auth.AuthUserRole">
+        SELECT role_id,user_id
+        FROM auth_user_role
+        where user_id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="listByRoleId" resultType="com.amis.api.admin.entity.auth.AuthUserRole">
+        SELECT user_id
+        FROM auth_user_role
+        where role_id = #{roleId}
+    </select>
+
+    <insert id="insertAuthUserRoleAll">
+        INSERT INTO auth_user_role
+        (role_id, user_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            <if test="item.roleId != null and item.adminId != null">
+                (#{item.roleId}, #{item.adminId})
+            </if>
+        </foreach>
+    </insert>
+
+    <delete id="deleteByAdminId" parameterType="java.lang.Long">
+        delete from auth_user_role where user_id = #{adminId}
+    </delete>
+
+</mapper>
