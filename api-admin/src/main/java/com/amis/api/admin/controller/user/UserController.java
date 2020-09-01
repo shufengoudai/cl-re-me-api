@@ -95,17 +95,6 @@ public class UserController extends BaseController {
         return ResultVOUtils.success(res);
     }
 
-    /**
-     * user表，删除用户
-     * @param data
-     * @return
-     */
-    @PostMapping("/user/delete")
-    public BaseResponse deleteUser(@RequestBody @Valid UserRequest data){
-        userService.deleteUser(data);
-        return ResultVOUtils.success(true);
-    }
-
     @GetMapping("/user/getUser")
     public BaseResponse getUser(@RequestParam("id") String id) {
         User user = userService.getUser(id);

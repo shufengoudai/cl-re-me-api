@@ -4,12 +4,9 @@ import com.amis.api.admin.constant.MessageConstant;
 import com.amis.api.admin.dao.user.UserDao;
 import com.amis.api.admin.entity.user.User;
 import com.amis.api.admin.exception.JsonException;
-import com.amis.api.admin.req.company.CompanyRequest;
 import com.amis.api.admin.req.user.PasswordChangeRequest;
 import com.amis.api.admin.req.user.UserRequest;
 import com.amis.api.admin.service.BaseServiceImpl;
-import com.amis.api.admin.service.notificationHistory.NotificationHistoryService;
-import com.amis.api.admin.service.story.StoryService;
 import com.amis.api.admin.service.user.UserService;
 import com.amis.api.admin.util.CacheUtils;
 import com.amis.api.admin.util.LangUtil;
@@ -51,12 +48,6 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
   @Resource
   private TMemberProjectMapper memberProjectMapper;
-
-  @Resource
-  private StoryService storyService;
-
-  @Resource
-  private NotificationHistoryService notificationHistoryService;
 
   /**
    * 多表查询，检索用户加入的项目一览
@@ -277,8 +268,6 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
                 .and(TUserDynamicSqlSupport.logicalDelDiv,isEqualTo(0)).build()
                 .render(RenderingStrategies.MYBATIS3);
         userMapper.update(updateStatement);
-        //通知
-        addNotificationHistory(data,tUserOptional);
         //流程正常
         res = true;
         //排他失败
@@ -342,69 +331,6 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     return true;
   }
 
-  /**
-   * user表，删除用户
-   * @param data
-   * @return
-   */
-  @Override
-  public boolean deleteUser(UserRequest data) {
-    //检索user是否存在
-    SelectStatementProvider selectStatement = SqlBuilder
-            .select(TUserDynamicSqlSupport.updDtTime)
-            .from(TUserDynamicSqlSupport.TUser)
-            .where(TUserDynamicSqlSupport.id,isEqualTo(data.getId()))
-            .and(TUserDynamicSqlSupport.logicalDelDiv,isEqualTo(0)).build()
-            .render(RenderingStrategies.MYBATIS3);
-    Optional<TUser> tUserOptional = userMapper.selectOne(selectStatement);
-    //存在场合
-    if (tUserOptional.isPresent()) {
-      //排他处理
-      if (tUserOptional.get().getUpdDtTime().equals(data.getUpdDtTime())) {
-        //逻辑删除user
-        UpdateStatementProvider updateStatement = SqlBuilder
-                .update(TUserDynamicSqlSupport.TUser)
-                .set(TUserDynamicSqlSupport.logicalDelDiv).equalTo(1)
-                .set(TUserDynamicSqlSupport.updAccountId).equalTo(data.getInsAccountId())
-                .set(TUserDynamicSqlSupport.updDtTime).equalTo(new Date())
-                .where(TUserDynamicSqlSupport.id,isEqualTo(data.getId())).build()
-                .render(RenderingStrategies.MYBATIS3);
-        userMapper.update(updateStatement);
-        //删除项目成员表中的用户
-        SelectStatementProvider selectStatementProvider = SqlBuilder
-                .select(TMemberProjectDynamicSqlSupport.userId)
-                .from(TMemberProjectDynamicSqlSupport.TMemberProject)
-                .where(TMemberProjectDynamicSqlSupport.userId,isEqualTo(data.getId()))
-                .and(TMemberProjectDynamicSqlSupport.logicalDelDiv,isEqualTo(0)).build()
-                .render(RenderingStrategies.MYBATIS3);
-        List<TMemberProject> tMemberProjects = memberProjectMapper.selectMany(selectStatementProvider);
-
-        if (tMemberProjects.size() > 0) {
-          DeleteStatementProvider deleteStatement = SqlBuilder
-                  .deleteFrom(TMemberProjectDynamicSqlSupport.TMemberProject)
-                  .where(TMemberProjectDynamicSqlSupport.userId,isEqualTo(data.getId()))
-                  .and(TMemberProjectDynamicSqlSupport.logicalDelDiv,isEqualTo(0)).build()
-                  .render(RenderingStrategies.MYBATIS3);
-          memberProjectMapper.delete(deleteStatement);
-        }
-        //删除与该user相关的所有story下的storyowner
-        storyService.deleteStoryOwner(data.getId(),data.getInsAccountId());
-        //排他失败
-      } else {
-        throw new JsonException(ResultEnum.EXCLUSION_ERROR,
-                MessageUtil.getMessage(MessageConstant.messageInfo,MessageConstant.exclusionError,
-                        LangUtil.getLangFromRedis(httpServletRequest.getHeader(MessageConstant.token))));
-      }
-      //检索不到数据，抛出异常
-    } else {
-      throw new JsonException(ResultEnum.DATA_NOT,
-              MessageUtil.getMessage(MessageConstant.messageWarning,MessageConstant.dataNot,
-                      LangUtil.getLangFromRedis(httpServletRequest.getHeader(MessageConstant.token))));
-    }
-    String aarKey = String.format(CacheConstant.ADMIN_AUTH_RULES, data.getId());
-    CacheUtils.delete(aarKey);
-    return true;
-  }
 
   @Override
   public User getUser(String id) {
@@ -412,114 +338,4 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     return user;
   }
 
-  /**
-   * user表，登录数据
-   * @param data
-   * @return
-   */
-  @Override
-  public boolean insertUser(CompanyRequest data) {
-    TUser tUser = new TUser();
-    BeanUtils.copyProperties(data,tUser);
-
-    tUser.setAuthority(1);
-    tUser.setInsDtTime(new Date());
-    tUser.setUpdAccountId(tUser.getInsAccountId());
-    tUser.setUpdDtTime(new Date());
-    tUser.setLogicalDelDiv(0);
-    tUser.setPassword(PasswordUtils.hashPassword(tUser.getPassword()));
-
-    //新增企业时，新增企业管理员
-    InsertStatementProvider<TUser> insertStatement = SqlBuilder.insert(tUser)
-            .into(TUserDynamicSqlSupport.TUser)
-            .map(TUserDynamicSqlSupport.userName).toProperty("userName")
-            .map(TUserDynamicSqlSupport.userFullname).toProperty("userFullname")
-            .map(TUserDynamicSqlSupport.password).toProperty("password")
-            .map(TUserDynamicSqlSupport.authority).toProperty("authority")
-            .map(TUserDynamicSqlSupport.position).toProperty("position")
-            .map(TUserDynamicSqlSupport.userMail).toProperty("userMail")
-            .map(TUserDynamicSqlSupport.userTel).toProperty("userTel")
-            .map(TUserDynamicSqlSupport.userDepart).toProperty("userDepart")
-            .map(TUserDynamicSqlSupport.userSex).toProperty("userSex")
-            .map(TUserDynamicSqlSupport.userNotify).toProperty("userNotify")
-            .map(TUserDynamicSqlSupport.insAccountId).toProperty("insAccountId")
-            .map(TUserDynamicSqlSupport.insDtTime).toProperty("insDtTime")
-            .map(TUserDynamicSqlSupport.updAccountId).toProperty("updAccountId")
-            .map(TUserDynamicSqlSupport.updDtTime).toProperty("updDtTime")
-            .map(TUserDynamicSqlSupport.logicalDelDiv).toProperty("logicalDelDiv")
-            .map(TUserDynamicSqlSupport.companyId).toProperty("companyId").build()
-            .render(RenderingStrategies.MYBATIS3);
-    userMapper.insert(insertStatement);
-    return true;
-  }
-
-  private void addNotificationHistory(UserRequest data, Optional<TUser> selectUpdate){
-    if(data.getInsAccountId() != null && data.getId() != null && !data.getInsAccountId().equals(data.getId())){
-      String userFullName = "";
-//      String notifyContent = "更新了您的";
-      String notifyContent = "";
-      SelectStatementProvider statementProvider1 = SqlBuilder
-              .select(TUserDynamicSqlSupport.userFullname)
-              .from(TUserDynamicSqlSupport.TUser)
-              .where(TUserDynamicSqlSupport.id,isEqualTo(UUID.fromString(data.getInsAccountId().toString())))
-              .and(TUserDynamicSqlSupport.logicalDelDiv,isEqualTo(0)).build()
-              .render(RenderingStrategies.MYBATIS3);
-      Optional<TUser> tUser = userMapper.selectOne(statementProvider1);
-      if(tUser.isPresent()){
-        userFullName = tUser.get().getUserFullname();
-        TNotificationHistory dataNotification = new TNotificationHistory();
-        dataNotification.setNotifyMember(data.getId());
-//        notifyContent = userFullName.concat(notifyContent);
-        notifyContent = userFullName.concat("　あなたの");
-        if(!data.getUserName().equals(selectUpdate.get().getUserName())){
-//          notifyContent = notifyContent.concat(" 用户帐号");
-          notifyContent = notifyContent.concat(" ユーザー名");
-        }
-        if((data.getUserFullname()!=null && !data.getUserFullname().equals(selectUpdate.get().getUserFullname()))
-                ||(data.getUserFullname()==null && selectUpdate.get().getUserFullname()!=null)){
-//          notifyContent = notifyContent.concat(" 姓名");
-          notifyContent = notifyContent.concat(" 名前");
-        }
-        if((data.getUserMail()!=null && !data.getUserMail().equals(selectUpdate.get().getUserMail()))
-                ||(data.getUserMail()==null && selectUpdate.get().getUserMail()!=null)){
-//          notifyContent = notifyContent.concat(" 邮箱");
-          notifyContent = notifyContent.concat(" メールアドレス");
-        }
-        if((data.getUserTel()!=null && !data.getUserTel().equals(selectUpdate.get().getUserTel()))
-                ||(data.getUserTel()==null && selectUpdate.get().getUserTel()!=null)){
-//          notifyContent = notifyContent.concat(" 手机号");
-          notifyContent = notifyContent.concat(" 電話番号");
-        }
-        if((data.getPosition()!=null && !data.getPosition().equals(selectUpdate.get().getPosition()))
-                ||(data.getPosition()==null && selectUpdate.get().getPosition()!=null)){
-//          notifyContent = notifyContent.concat(" 职位");
-          notifyContent = notifyContent.concat(" 職位");
-        }
-        if((data.getUserDepart()!=null && !data.getUserDepart().equals(selectUpdate.get().getUserDepart()))
-                ||(data.getUserDepart()==null && selectUpdate.get().getUserDepart()!=null)){
-//          notifyContent = notifyContent.concat(" 部门");
-          notifyContent = notifyContent.concat(" 部門");
-        }
-        if((data.getUserSex()!=null && !data.getUserSex().equals(selectUpdate.get().getUserSex()))
-                ||(data.getUserSex()==null && selectUpdate.get().getUserSex()!=null)){
-//          notifyContent = notifyContent.concat(" 性别");
-          notifyContent = notifyContent.concat(" 性別");
-        }
-        if((data.getAuthority()!=null && !data.getAuthority().equals(selectUpdate.get().getAuthority()))
-                ||(data.getAuthority()==null && selectUpdate.get().getAuthority()!=null)){
-//          notifyContent = notifyContent.concat(" 权限");
-          notifyContent = notifyContent.concat(" 権限");
-        }
-        notifyContent=notifyContent.concat("を更新しました");
-        dataNotification.setNotifyContent(notifyContent);
-        dataNotification.setNotifyTime(new Date());
-        dataNotification.setInsAccountId(UUID.fromString(data.getInsAccountId().toString()));
-        dataNotification.setInsDtTime(new Date());
-        dataNotification.setUpdAccountId(UUID.fromString(data.getInsAccountId().toString()));
-        dataNotification.setUpdDtTime(new Date());
-        dataNotification.setLogicalDelDiv(0);
-        notificationHistoryService.insertNotificationHistory(dataNotification );
-      }
-    }
-  }
 }
