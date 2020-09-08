@@ -42,10 +42,6 @@ public final class TUserDynamicSqlSupport {
     public static final SqlColumn<Date> updDtTime = TUser.updDtTime;
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6313005+08:00", comments = "Source field: t_user.logical_del_div")
     public static final SqlColumn<Integer> logicalDelDiv = TUser.logicalDelDiv;
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6313005+08:00", comments = "Source field: t_user.company_id")
-    public static final SqlColumn<Object> companyId = TUser.companyId;
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6313005+08:00", comments = "Source field: t_user.auth_type")
-    public static final SqlColumn<Integer> authType = TUser.authType;
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6293035+08:00", comments = "Source Table: t_user")
     public static final class TUser extends SqlTable {
@@ -65,8 +61,6 @@ public final class TUserDynamicSqlSupport {
         public final SqlColumn<Object> updAccountId = column("upd_account_id", JDBCType.INTEGER);
         public final SqlColumn<Date> updDtTime = column("upd_dt_time", JDBCType.TIMESTAMP);
         public final SqlColumn<Integer> logicalDelDiv = column("logical_del_div", JDBCType.INTEGER);
-        public final SqlColumn<Object> companyId = column("company_id", JDBCType.OTHER);
-        public final SqlColumn<Integer> authType = column("auth_type", JDBCType.INTEGER);
 
         public TUser() {
             super("t_user");

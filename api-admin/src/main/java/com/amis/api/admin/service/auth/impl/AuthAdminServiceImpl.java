@@ -70,8 +70,7 @@ public class AuthAdminServiceImpl extends BaseServiceImpl implements AuthAdminSe
                 TUserDynamicSqlSupport.userFullname,
                 TUserDynamicSqlSupport.userMail,
                 TUserDynamicSqlSupport.password,
-                TUserDynamicSqlSupport.authority,
-                TUserDynamicSqlSupport.authType)
+                TUserDynamicSqlSupport.authority)
             .from(TUserDynamicSqlSupport.TUser)
             .where(TUserDynamicSqlSupport.userName, SqlBuilder.isEqualTo(userName))
             .and(TUserDynamicSqlSupport.logicalDelDiv, SqlBuilder.isEqualTo(0))
@@ -84,7 +83,6 @@ public class AuthAdminServiceImpl extends BaseServiceImpl implements AuthAdminSe
       admin.setEmail(user.get().getUserMail());
       admin.setId(user.get().getId());
       admin.setPassword(user.get().getPassword());
-      admin.setAuthType(user.get().getAuthType());
     }
     return admin;
   }
@@ -104,8 +102,7 @@ public class AuthAdminServiceImpl extends BaseServiceImpl implements AuthAdminSe
                 TUserDynamicSqlSupport.userFullname,
                 TUserDynamicSqlSupport.userMail,
                 TUserDynamicSqlSupport.password,
-                TUserDynamicSqlSupport.authority,
-                TUserDynamicSqlSupport.authType)
+                TUserDynamicSqlSupport.authority)
             .from(TUserDynamicSqlSupport.TUser)
             .where(TUserDynamicSqlSupport.id, SqlBuilder.isEqualTo(id))
             .and(TUserDynamicSqlSupport.logicalDelDiv, SqlBuilder.isEqualTo(0))
@@ -118,7 +115,6 @@ public class AuthAdminServiceImpl extends BaseServiceImpl implements AuthAdminSe
       admin.setEmail(user.get().getUserMail());
       admin.setId(user.get().getId());
       admin.setPassword(user.get().getPassword());
-      admin.setAuthType(user.get().getAuthType());
     }
     return admin;
   }

@@ -132,8 +132,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
             .map(TUserDynamicSqlSupport.insDtTime).toProperty("insDtTime")
             .map(TUserDynamicSqlSupport.updAccountId).toProperty("updAccountId")
             .map(TUserDynamicSqlSupport.updDtTime).toProperty("updDtTime")
-            .map(TUserDynamicSqlSupport.logicalDelDiv).toProperty("logicalDelDiv")
-            .map(TUserDynamicSqlSupport.companyId).toProperty("companyId").build()
+            .map(TUserDynamicSqlSupport.logicalDelDiv).toProperty("logicalDelDiv").build()
             .render(RenderingStrategies.MYBATIS3);
     userMapper.insert(insertStatement);
 
@@ -183,8 +182,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
                   ,TUserDynamicSqlSupport.insDtTime
                   ,TUserDynamicSqlSupport.updAccountId
                   ,TUserDynamicSqlSupport.updDtTime
-                  ,TUserDynamicSqlSupport.authority
-                  ,TUserDynamicSqlSupport.companyId)
+                  ,TUserDynamicSqlSupport.authority)
             .from(TUserDynamicSqlSupport.TUser)
             .where(TUserDynamicSqlSupport.id,isEqualTo(UUID.fromString(userId)))
             .and(TUserDynamicSqlSupport.logicalDelDiv,isEqualTo(0)).build()

@@ -38,7 +38,7 @@ public interface TUserMapper {
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.658286+08:00", comments = "Source Table: t_user")
     BasicColumn[] selectList = BasicColumn.columnList(id, userName, userFullname, password, authority, position,
             userMail, userTel, userDepart, userSex, userNotify, insAccountId, insDtTime, updAccountId, updDtTime,
-            logicalDelDiv, companyId, authType);
+            logicalDelDiv);
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6323008+08:00", comments = "Source Table: t_user")
     @SelectProvider(type = SqlProviderAdapter.class, method = "select")
@@ -79,9 +79,7 @@ public interface TUserMapper {
             @Result(column = "ins_dt_time", property = "insDtTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "upd_account_id", property = "updAccountId", jdbcType = JdbcType.OTHER),
             @Result(column = "upd_dt_time", property = "updDtTime", jdbcType = JdbcType.TIMESTAMP),
-            @Result(column = "logical_del_div", property = "logicalDelDiv", jdbcType = JdbcType.INTEGER),
-            @Result(column = "company_id", property = "companyId", jdbcType = JdbcType.OTHER),
-            @Result(column = "auth_type", property = "authType", jdbcType = JdbcType.INTEGER),})
+            @Result(column = "logical_del_div", property = "logicalDelDiv", jdbcType = JdbcType.INTEGER),})
     List<TUser> selectMany(SelectStatementProvider selectStatement);
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6532879+08:00", comments = "Source Table: t_user")
@@ -112,7 +110,7 @@ public interface TUserMapper {
                 .toProperty("userDepart").map(userSex).toProperty("userSex").map(userNotify).toProperty("userNotify")
                 .map(insAccountId).toProperty("insAccountId").map(insDtTime).toProperty("insDtTime").map(updAccountId)
                 .toProperty("updAccountId").map(updDtTime).toProperty("updDtTime").map(logicalDelDiv)
-                .toProperty("logicalDelDiv").map(companyId).toProperty("companyId").map(authType).toProperty("authType"));
+                .toProperty("logicalDelDiv"));
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6562867+08:00", comments = "Source Table: t_user")
@@ -124,7 +122,7 @@ public interface TUserMapper {
                 .toProperty("userDepart").map(userSex).toProperty("userSex").map(userNotify).toProperty("userNotify")
                 .map(insAccountId).toProperty("insAccountId").map(insDtTime).toProperty("insDtTime").map(updAccountId)
                 .toProperty("updAccountId").map(updDtTime).toProperty("updDtTime").map(logicalDelDiv)
-                .toProperty("logicalDelDiv").map(companyId).toProperty("companyId").map(authType).toProperty("authType"));
+                .toProperty("logicalDelDiv"));
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6562867+08:00", comments = "Source Table: t_user")
@@ -145,9 +143,7 @@ public interface TUserMapper {
                         .toPropertyWhenPresent("insDtTime", record::getInsDtTime).map(updAccountId)
                         .toPropertyWhenPresent("updAccountId", record::getUpdAccountId).map(updDtTime)
                         .toPropertyWhenPresent("updDtTime", record::getUpdDtTime).map(logicalDelDiv)
-                        .toPropertyWhenPresent("logicalDelDiv", record::getLogicalDelDiv).map(companyId)
-                        .toPropertyWhenPresent("companyId", record::getCompanyId).map(authType)
-                        .toPropertyWhenPresent("authType", record::getAuthType));
+                        .toPropertyWhenPresent("logicalDelDiv", record::getLogicalDelDiv));
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.658286+08:00", comments = "Source Table: t_user")
@@ -184,8 +180,7 @@ public interface TUserMapper {
                 .equalTo(record::getUserDepart).set(userSex).equalTo(record::getUserSex).set(userNotify)
                 .equalTo(record::getUserNotify).set(insAccountId).equalTo(record::getInsAccountId).set(insDtTime)
                 .equalTo(record::getInsDtTime).set(updAccountId).equalTo(record::getUpdAccountId).set(updDtTime)
-                .equalTo(record::getUpdDtTime).set(logicalDelDiv).equalTo(record::getLogicalDelDiv).set(companyId)
-                .equalTo(record::getCompanyId).set(authType).equalTo(record::getAuthType);
+                .equalTo(record::getUpdDtTime).set(logicalDelDiv).equalTo(record::getLogicalDelDiv);
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6612832+08:00", comments = "Source Table: t_user")
@@ -200,8 +195,7 @@ public interface TUserMapper {
                 .set(insAccountId).equalToWhenPresent(record::getInsAccountId).set(insDtTime)
                 .equalToWhenPresent(record::getInsDtTime).set(updAccountId).equalToWhenPresent(record::getUpdAccountId)
                 .set(updDtTime).equalToWhenPresent(record::getUpdDtTime).set(logicalDelDiv)
-                .equalToWhenPresent(record::getLogicalDelDiv).set(companyId).equalToWhenPresent(record::getCompanyId)
-                .set(authType).equalToWhenPresent(record::getAuthType);
+                .equalToWhenPresent(record::getLogicalDelDiv);
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6622828+08:00", comments = "Source Table: t_user")
@@ -213,8 +207,7 @@ public interface TUserMapper {
                 .equalTo(record::getUserDepart).set(userSex).equalTo(record::getUserSex).set(userNotify)
                 .equalTo(record::getUserNotify).set(insAccountId).equalTo(record::getInsAccountId).set(insDtTime)
                 .equalTo(record::getInsDtTime).set(updAccountId).equalTo(record::getUpdAccountId).set(updDtTime)
-                .equalTo(record::getUpdDtTime).set(logicalDelDiv).equalTo(record::getLogicalDelDiv).set(companyId)
-                .equalTo(record::getCompanyId).set(authType).equalTo(record::getAuthType).where(id, isEqualTo(record::getId)));
+                .equalTo(record::getUpdDtTime).set(logicalDelDiv).equalTo(record::getLogicalDelDiv).where(id, isEqualTo(record::getId)));
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6632833+08:00", comments = "Source Table: t_user")
@@ -229,8 +222,7 @@ public interface TUserMapper {
                 .equalToWhenPresent(record::getInsAccountId).set(insDtTime).equalToWhenPresent(record::getInsDtTime)
                 .set(updAccountId).equalToWhenPresent(record::getUpdAccountId).set(updDtTime)
                 .equalToWhenPresent(record::getUpdDtTime).set(logicalDelDiv)
-                .equalToWhenPresent(record::getLogicalDelDiv).set(companyId).equalToWhenPresent(record::getCompanyId)
-                .set(authType).equalToWhenPresent(record::getAuthType)
+                .equalToWhenPresent(record::getLogicalDelDiv)
                 .where(id, isEqualTo(record::getId)));
     }
 }

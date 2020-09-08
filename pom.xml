@@ -32,7 +32,7 @@
             <dependency>
                 <groupId>com.lmxdawn</groupId>
                 <artifactId>api-common</artifactId>
-                <version>${version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!--Json 操作-->
@@ -41,12 +41,12 @@
                 <artifactId>fastjson</artifactId>
                 <version>1.2.51</version>
             </dependency>
-            
+
             <dependency>
-			  <groupId>com.google.googlejavaformat</groupId>
-			  <artifactId>google-java-format</artifactId>
-			  <version>1.8</version>
-			</dependency>
+                <groupId>com.google.googlejavaformat</groupId>
+                <artifactId>google-java-format</artifactId>
+                <version>1.8</version>
+            </dependency>
 
             <!--common-->
             <dependency>

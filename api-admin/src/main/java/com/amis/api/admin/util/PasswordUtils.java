@@ -67,4 +67,9 @@ public class PasswordUtils {
     bcryptResult.put(CIPHER_KEY, cipher);
     return bcryptResult;
   }
+
+  public static void main(String[] args) {
+    String ccc = hashPassword("aaaa");
+    System.out.println(ccc);
+  }
 }

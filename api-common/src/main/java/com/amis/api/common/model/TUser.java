@@ -37,10 +37,6 @@ public class TUser {
     private Date updDtTime;
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6243054+08:00", comments = "Source field: t_user.logical_del_div")
     private Integer logicalDelDiv;
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6243054+08:00", comments = "Source field: t_user.company_id")
-    private Object companyId;
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6243054+08:00", comments = "Source field: t_user.auth_type")
-    private Integer authType;
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6213088+08:00", comments = "Source field: t_user.id")
     public Object getId() {
@@ -200,25 +196,5 @@ public class TUser {
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6243054+08:00", comments = "Source field: t_user.logical_del_div")
     public void setLogicalDelDiv(Integer logicalDelDiv) {
         this.logicalDelDiv = logicalDelDiv;
-    }
-
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6243054+08:00", comments = "Source field: t_user.company_id")
-    public Object getCompanyId() {
-        return companyId;
-    }
-
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6243054+08:00", comments = "Source field: t_user.company_id")
-    public void setCompanyId(Object companyId) {
-        this.companyId = companyId;
-    }
-
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6233058+08:00", comments = "Source field: t_user.auth_type")
-    public Integer getAuthType() {
-        return authType;
-    }
-
-    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-06-22T17:38:43.6233058+08:00", comments = "Source field: t_user.auth_type")
-    public void setAuthType(Integer authType) {
-        this.authType = authType;
     }
 }

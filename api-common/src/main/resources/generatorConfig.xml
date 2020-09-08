@@ -1,14 +1,14 @@
 <!DOCTYPE generatorConfiguration PUBLIC
- "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
- "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
   <context id="dsql" targetRuntime="MyBatis3DynamicSql">
     <jdbcConnection driverClass="org.postgresql.Driver"
-        connectionURL="jdbc:postgresql://172.16.48.162/amisdb" userId="uamis" password="sun.japan"/>
+                    connectionURL="jdbc:postgresql://172.16.3.23/CRM" userId="uamis" password="sun.japan"/>
 
-    <javaModelGenerator targetPackage="com.amis.api.common.model" targetProject="api-common/src/main/java"/>
+    <javaModelGenerator targetPackage="com.amis.api.common.model" targetProject="src/main/java"/>
 
-    <javaClientGenerator targetPackage="com.amis.api.common.mapper" targetProject="api-common/src/main/java"/>
+    <javaClientGenerator targetPackage="com.amis.api.common.mapper" targetProject="src/main/java"/>
     <table tableName="t_user" />
     <table tableName="t_project" />
   </context>
