@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amis.api.admin.dao.contact.ContactDao">
+    <select id="listContactInfo" resultType="com.amis.api.admin.req.contact.ContactRequest">
+        SELECT t_contacter.contact_name,contact_age,contact_sex,contact_nation,contact_birthpalce,
+        contact_nation_current,contact_place_current,t_company.company_name
+        FROM t_contacter
+        LEFT JOIN t_contacter_company
+        ON t_contacter.id = t_contacter_company.contact_id
+        LEFT JOIN t_company
+        ON t_contacter_company.company_id = t_company.id
+        <where>
+            t_contacter.logical_del_div = 0
+        </where>
+    </select>
+</mapper>

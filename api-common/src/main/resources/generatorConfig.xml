@@ -11,5 +11,7 @@
     <javaClientGenerator targetPackage="com.amis.api.common.mapper" targetProject="src/main/java"/>
     <table tableName="t_user" />
     <table tableName="t_project" />
+    <table tableName="t_contacter" />
+    <table tableName="t_contacter_company" />
   </context>
 </generatorConfiguration>
