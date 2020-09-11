@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.amis.api.admin.dao.contact.ContactDao">
-    <select id="listContactInfo" resultType="com.amis.api.admin.req.contact.ContactRequest">
-        SELECT t_contacter.contact_name,contact_age,contact_sex,contact_nation,contact_birthpalce,
+    <select id="listContactInfo" resultType="com.amis.api.admin.dto.contact.ContactDto">
+        SELECT t_contacter.id,contact_name,contact_age,contact_sex,contact_nation,contact_birthpalce,
         contact_nation_current,contact_place_current,t_company.company_name
         FROM t_contacter
         LEFT JOIN t_contacter_company
@@ -11,6 +11,39 @@
         ON t_contacter_company.company_id = t_company.id
         <where>
             t_contacter.logical_del_div = 0
+            and t_contacter_company.contact_status = 0
         </where>
+    </select>
+
+    <update id="deleteContactLogical" parameterType="java.util.UUID">
+        UPDATE t_contacter
+        SET logical_del_div = 1
+        WHERE id = #{id}
+    </update>
+    
+    <select id="getContacterCompanyCurrents" parameterType="java.util.UUID" resultType="java.lang.String">
+<!--        SELECT t_company.company_name-->
+<!--        FROM t_contacter-->
+<!--        LEFT JOIN t_contacter_company-->
+<!--        ON t_contacter.id = t_contacter_company.contact_id-->
+<!--        LEFT JOIN t_company-->
+<!--        ON t_contacter_company.company_id = t_company.id-->
+<!--        <where>-->
+<!--            t_contacter.logical_del_div = 0-->
+<!--            AND t_contacter_company.contact_status = 0-->
+<!--            AND t_contacter.id = #{id}-->
+<!--        </where>-->
+<!--        SELECT t_company.company_name-->
+<!--        FROM t_company-->
+<!--        LEFT JOIN t_contacter_company-->
+<!--        ON t_contacter_company.company_id = t_company.id-->
+<!--        LEFT JOIN t_contacter-->
+<!--        ON t_contacter.id = t_contacter_company.contact_id-->
+<!--        <where>-->
+<!--            t_contacter.logical_del_div = 0-->
+<!--            AND t_contacter_company.contact_status = 0-->
+<!--            AND t_contacter.id = #{id}-->
+<!--        </where>-->
+        select company_name from t_company where id in (select company_id from t_contacter_company where contact_id = #{id}) limit 1
     </select>
 </mapper>

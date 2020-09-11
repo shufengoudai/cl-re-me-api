@@ -1,9 +1,13 @@
 package com.amis.api.admin.service.contact;
 
-import com.amis.api.admin.req.contact.ContactRequest;
+import com.amis.api.admin.dto.contact.ContactDto;
 
 import java.util.List;
 
 public interface ContactInfoService {
-    List<ContactRequest> listContactInfo();
+    List<ContactDto> listContactInfo();
+
+    Boolean deleteContactLogical(String id);
+
+    String getContacterCompanyCurrent(String id);
 }
