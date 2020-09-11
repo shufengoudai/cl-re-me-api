@@ -22,28 +22,25 @@
     </update>
     
     <select id="getContacterCompanyCurrents" parameterType="java.util.UUID" resultType="java.lang.String">
-<!--        SELECT t_company.company_name-->
-<!--        FROM t_contacter-->
-<!--        LEFT JOIN t_contacter_company-->
-<!--        ON t_contacter.id = t_contacter_company.contact_id-->
-<!--        LEFT JOIN t_company-->
-<!--        ON t_contacter_company.company_id = t_company.id-->
-<!--        <where>-->
-<!--            t_contacter.logical_del_div = 0-->
-<!--            AND t_contacter_company.contact_status = 0-->
-<!--            AND t_contacter.id = #{id}-->
-<!--        </where>-->
-<!--        SELECT t_company.company_name-->
-<!--        FROM t_company-->
-<!--        LEFT JOIN t_contacter_company-->
-<!--        ON t_contacter_company.company_id = t_company.id-->
-<!--        LEFT JOIN t_contacter-->
-<!--        ON t_contacter.id = t_contacter_company.contact_id-->
-<!--        <where>-->
-<!--            t_contacter.logical_del_div = 0-->
-<!--            AND t_contacter_company.contact_status = 0-->
-<!--            AND t_contacter.id = #{id}-->
-<!--        </where>-->
         select company_name from t_company where id in (select company_id from t_contacter_company where contact_id = #{id}) limit 1
+    </select>
+    
+    <select id="getContacterCurrent" parameterType="java.util.UUID" resultType="com.amis.api.admin.req.contact.ContacterRequest">
+        SELECT t_contacter.contact_name,contact_sex,contact_age,contact_age_group,
+        contact_birthday,contact_birthpalce,contact_nation,contact_nation_current,
+        contact_place_current,contact_tel,contact_mail,contact_social_media,contact_school,
+        contact_language1,contact_language2,contact_language3,contact_language4,contact_personal,
+        contact_favorite,contact_channel,relate_person,contact_memo,contact_photo_id,contact_photo,
+        t_company.company_name
+        FROM t_contacter
+        LEFT JOIN t_contacter_company
+        ON t_contacter.id = t_contacter_company.contact_id
+        LEFT JOIN t_company
+        ON t_contacter_company.company_id = t_company.id
+        <where>
+            t_contacter_company.contact_status = 1
+            AND t_contacter_company.logical_del_div = 0
+            AND t_contacter.id = #{id}
+        </where>
     </select>
 </mapper>
