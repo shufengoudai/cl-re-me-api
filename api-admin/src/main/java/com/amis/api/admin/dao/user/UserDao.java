@@ -1,6 +1,7 @@
 package com.amis.api.admin.dao.user;
 
 import com.amis.api.admin.entity.user.User;
+import com.amis.api.admin.entity.user.UserWindow;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,4 +17,6 @@ public interface UserDao {
     User getUser(@Param("id") UUID id);
 
     boolean updateByCompany(@Param("id") UUID id,@Param("updAccountId") UUID updAccountId,@Param("date") Date date);
+
+    List<UserWindow> getUserList();
 }

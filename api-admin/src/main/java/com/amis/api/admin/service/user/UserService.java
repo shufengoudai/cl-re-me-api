@@ -1,6 +1,7 @@
 package com.amis.api.admin.service.user;
 
 import com.amis.api.admin.entity.user.User;
+import com.amis.api.admin.entity.user.UserWindow;
 import com.amis.api.admin.req.user.PasswordChangeRequest;
 import com.amis.api.admin.req.user.UserRequest;
 import com.amis.api.common.dto.PulldownDto;
@@ -21,5 +22,7 @@ public interface UserService {
   boolean changePassword(PasswordChangeRequest data);
 
   User getUser(String id);
+
+  List<UserWindow> getUserList();
 
 }

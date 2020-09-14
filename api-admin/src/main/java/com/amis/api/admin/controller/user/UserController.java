@@ -3,8 +3,10 @@ package com.amis.api.admin.controller.user;
 import com.amis.api.admin.constant.MessageConstant;
 import com.amis.api.admin.controller.BaseController;
 import com.amis.api.admin.entity.user.User;
+import com.amis.api.admin.entity.user.UserWindow;
 import com.amis.api.admin.req.user.PasswordChangeRequest;
 import com.amis.api.admin.req.user.UserRequest;
+import com.amis.api.admin.res.user.UserWindowResponse;
 import com.amis.api.admin.service.auth.AuthRoleAdminService;
 import com.amis.api.admin.service.user.UserService;
 import com.amis.api.admin.util.LangUtil;
@@ -12,6 +14,7 @@ import com.amis.api.admin.util.MessageUtil;
 import com.amis.api.common.enums.ResultEnum;
 import com.amis.api.common.res.BaseResponse;
 import com.amis.api.common.util.ResultVOUtils;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -99,5 +102,13 @@ public class UserController extends BaseController {
     public BaseResponse getUser(@RequestParam("id") String id) {
         User user = userService.getUser(id);
         return ResultVOUtils.success(user);
+    }
+
+    @PostMapping("/user/list/name")
+    public BaseResponse getUserWindow(){
+        List<UserWindow> userWindowList = userService.getUserList();
+        UserWindowResponse userWindowResponse = new UserWindowResponse();
+        userWindowResponse.setUserList(userWindowList);
+        return ResultVOUtils.success(userWindowResponse);
     }
 }

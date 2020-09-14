@@ -3,6 +3,7 @@ package com.amis.api.admin.service.user.impl;
 import com.amis.api.admin.constant.MessageConstant;
 import com.amis.api.admin.dao.user.UserDao;
 import com.amis.api.admin.entity.user.User;
+import com.amis.api.admin.entity.user.UserWindow;
 import com.amis.api.admin.exception.JsonException;
 import com.amis.api.admin.req.user.PasswordChangeRequest;
 import com.amis.api.admin.req.user.UserRequest;
@@ -334,6 +335,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
   public User getUser(String id) {
     User user=userDao.getUser(UUID.fromString(id));
     return user;
+  }
+
+  @Override
+  public List<UserWindow> getUserList() {
+    return userDao.getUserList();
   }
 
 }

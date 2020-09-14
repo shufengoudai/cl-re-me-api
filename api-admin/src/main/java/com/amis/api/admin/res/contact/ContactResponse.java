@@ -7,5 +7,5 @@ import java.util.List;
 
 @Data
 public class ContactResponse {
-    List<ContactDto> contacts;
+    private List<ContactDto> contacts;
 }

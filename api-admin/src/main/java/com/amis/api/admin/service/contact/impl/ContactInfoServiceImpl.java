@@ -10,6 +10,7 @@ import com.amis.api.admin.util.EntityUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,16 +40,16 @@ public class ContactInfoServiceImpl extends BaseServiceImpl implements ContactIn
     @Override
     public ContacterDto getContacterInfo(String id) {
         List<ContacterRequest> contacterRequests = contactDao.getContacterCurrent(UUID.fromString(id));
-        if (contacterRequests == null) {
-            System.out.println("kong");
+        if (contacterRequests == null || contacterRequests.size() == 0) {
             return new ContacterDto();
         }
         ContacterDto contacterDto = EntityUtil.clone(contacterRequests.get(0), ContacterDto.class);
-        for (ContacterRequest contacterRequest : contacterRequests) {
-            contacterDto.getContactCompanyPast().add(contacterRequest.getCompanyName());
+        if (contacterDto != null){
+            for (ContacterRequest contacterRequest : contacterRequests) {
+                contacterDto.getContactCompanyPast().add(contacterRequest.getCompanyName());
+            }
+            contacterDto.flashType();
         }
-        contacterDto.flashType();
-        System.out.println(contacterDto);
         return contacterDto;
     }
 }

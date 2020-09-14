@@ -32,4 +32,10 @@
             upd_dt_time = '${date}'
         where company_id = '${id}'
     </update>
+
+    <select id="getUserList" resultType="com.amis.api.admin.entity.user.UserWindow">
+        SELECT id,user_name
+        FROM t_user
+        WHERE logical_del_div = 0
+    </select>
 </mapper>

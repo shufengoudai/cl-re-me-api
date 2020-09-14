@@ -3,6 +3,7 @@ package com.amis.api.admin.dto.contact;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,7 +26,7 @@ public class ContacterDto {
     private Integer contactLanguage2;
     private Integer contactLanguage3;
     private Integer contactLanguage4;
-    private List<String> contactLanguages;
+    private List<String> contactLanguages = new ArrayList<>();
     private String contactPersonal;
     private String contactFavorite;
     private String contactChannel;
@@ -35,7 +36,7 @@ public class ContacterDto {
     private String contactPhoto;
     //编辑联络人信息
     private String companyName;
-    private List<String> contactCompanyPast;
+    private List<String> contactCompanyPast = new ArrayList<>();
 
     public void setContactSexStr(Integer contactSex) {
         if (contactSex == 0){
