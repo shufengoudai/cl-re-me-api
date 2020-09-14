@@ -73,8 +73,6 @@ public class ContactInfoController extends BaseController {
     @GetMapping("/contact/edit/info")
     public BaseResponse getContacterCurrent(@RequestParam("id") String id){
         ContacterDto contacterInfo = contactInfoService.getContacterInfo(id);
-//        ContacterRequest contacterForm = EntityUtil.clone(contacterInfo, ContacterRequest.class);
-        System.out.println(contacterInfo);
         return ResultVOUtils.success(contacterInfo);
     }
 }

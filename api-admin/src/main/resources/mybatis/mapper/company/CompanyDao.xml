@@ -6,4 +6,8 @@
         FROM t_company
         WHERE logical_del_div = 0
     </select>
+
+    <update id="updateCompanyAndContactCompany">
+
+    </update>
 </mapper>
